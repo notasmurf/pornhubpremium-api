@@ -41,12 +41,25 @@ describe('Search Page', () => {
     await ph.search('Abby', 'pornstars', { page: 2 });
   });
 
+  it('should return a page number', async () => {
+    nock('https://www.pornhubpremium.com')
+        .get('/pornstars/search')
+        .query({ search: 'Abby', page: '2' })
+        .reply(200, '');
+
+    const results = await ph.search('Abby', 'pornstars', { page: 2 });
+    const pageNumber = results.getPage();
+
+    assert.equal(pageNumber, 2);
+  });
+
   it('should return a list of models for a models search', async () => {
     const expected = {
       rank: '8041',
       name: 'Abby Lane',
       videos: '12 Videos',
       views: '382K views',
+      url: 'https://www.pornhubpremium.com/pornstar/abby-lane',
     };
     nock('https://www.pornhubpremium.com')
       .filteringPath(() => '/pornstars/search')

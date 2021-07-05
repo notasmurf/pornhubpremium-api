@@ -64,7 +64,7 @@ const search = async (text = '', type = 'videos', options = {}) => {
   const response = await endpoints.fetchSearch(text, type, options, cookie);
 
   const html = await response.text();
-  const searchPage = new SearchPage(html);
+  const searchPage = new SearchPage(html, options);
 
   return searchPage;
 };
