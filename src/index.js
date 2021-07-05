@@ -1,6 +1,7 @@
 const endpoints = require('./utils/endpoints');
 const VideosPage = require('./pages/videos');
 const VideoPage = require('./pages/video');
+const SearchPage = require('./pages/search');
 
 let cookie;
 
@@ -32,7 +33,7 @@ const videos = async (options = {}) => {
   const response = await endpoints.fetchVideos(options, cookie);
 
   const html = await response.text();
-  const videosPage = new VideosPage(html);
+  const videosPage = new VideosPage(html, options);
 
   return videosPage;
 };
@@ -44,7 +45,7 @@ const videos = async (options = {}) => {
  * @private
  */
 const video = async (url) => {
-  const response = await endpoints.fetchPage(url, cookie);
+  const response = await endpoints.fetchVideo(url, cookie);
 
   const html = await response.text();
   const videoPage = new VideoPage(html);
@@ -52,8 +53,25 @@ const video = async (url) => {
   return videoPage;
 };
 
+/**
+ *
+ * @param text
+ * @param type
+ * @param options
+ * @returns {Promise<SearchPage>}
+ */
+const search = async (text = '', type = 'videos', options = {}) => {
+  const response = await endpoints.fetchSearch(text, type, options, cookie);
+
+  const html = await response.text();
+  const searchPage = new SearchPage(html);
+
+  return searchPage;
+};
+
 module.exports = {
   authenticate,
   videos,
   video,
+  search,
 };

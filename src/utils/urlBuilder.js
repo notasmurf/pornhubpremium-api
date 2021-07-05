@@ -29,6 +29,13 @@ const getBaseVideoUrl = (options = {}) => {
 
 /**
  *
+ * @param type
+ * @returns {string}
+ */
+const getBaseSearchUrl = (type) => (type === 'videos' ? urls.videoSearchUrl : urls.modelSearchUrl);
+
+/**
+ *
  * @param params
  * @returns {{}}
  */
@@ -42,10 +49,10 @@ const getVideosParams = (params = {}) => Object.keys(params)
 
 /**
  *
- * @param params
- * @returns {{page: *}}
+ * @param page
+ * @returns {{page}}
  */
-const getPageParams = (params = {}) => (params.page ? { page: params.page } : {});
+const getPageParams = (page) => (page ? { page } : {});
 
 /**
  *
@@ -67,6 +74,19 @@ const buildVideosUrl = (options = {}) => {
   return `${urlString}${queryString.length ? '?' : ''}${queryString}`;
 };
 
+const buildSearchUrl = (query, type, options) => {
+  const searchBase = getBaseSearchUrl(type);
+
+  const queryObject = {
+    ...getPageParams(options.page),
+    search: query,
+  };
+  const queryString = QueryString.stringify(queryObject);
+
+  return `${searchBase}${queryString.length ? '?' : ''}${queryString}`;
+};
+
 module.exports = {
   buildVideosUrl,
+  buildSearchUrl,
 };

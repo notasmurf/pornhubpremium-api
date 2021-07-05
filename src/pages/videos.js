@@ -2,6 +2,16 @@ const Page = require('./page');
 const urls = require('../configs/urls');
 
 class VideosPage extends Page {
+  constructor(html, options = {}) {
+    super(html);
+
+    this.options = options;
+  }
+
+  getPage() {
+    return this.options.page || 1;
+  }
+
   getVideos() {
     const videoListItems = Array.from(this.dom('.pcVideoListItem'));
 
@@ -39,7 +49,7 @@ class VideosPage extends Page {
         return {
           name,
           count,
-          url,
+          url: `${urls.baseUrl}${url}`,
         };
       })
       .filter((category) => category.name);

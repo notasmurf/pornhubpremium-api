@@ -35,6 +35,23 @@ class VideoPage extends Page {
 
     return models;
   }
+
+  getCategories() {
+    const categoryItems = Array.from(this.dom('.categoriesWrapper .item'));
+
+    const categories = categoryItems.map((categoryItem) => {
+      const categoryItemElem = this.dom(categoryItem);
+      const url = categoryItemElem.attr('href');
+      const name = categoryItemElem.text();
+
+      return {
+        url: `${urls.baseUrl}${url}`,
+        name,
+      };
+    });
+
+    return categories;
+  }
 }
 
 module.exports = VideoPage;
