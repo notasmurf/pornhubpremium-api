@@ -12,7 +12,7 @@ class Page {
 
     // Check auth.
     if (this.dom.text().includes(content.loginPageText)) {
-      throw new Error('Auth Failed.');
+      throw new Error('Auth failed.');
     }
   }
 }

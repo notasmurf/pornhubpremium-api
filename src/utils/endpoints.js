@@ -41,7 +41,7 @@ const fetchVideos = async (options, cookie) => fetch(urlBuilder.buildVideosUrl(o
  * @param cookie
  * @returns {Promise}
  */
-const fetchPage = async (url, cookie) => fetch(url, {
+const fetchVideo = async (url, cookie) => fetch(url, {
   headers: {
     ...headers,
     cookie,
@@ -52,8 +52,30 @@ const fetchPage = async (url, cookie) => fetch(url, {
   mode: 'cors',
 });
 
+/**
+ *
+ * @param search
+ * @param type
+ * @param options
+ * @param cookie
+ * @returns {Promise}
+ */
+const fetchSearch = async (search, type, options, cookie) => fetch(
+  urlBuilder.buildSearchUrl(search, type, options), {
+    headers: {
+      ...headers,
+      cookie,
+    },
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    body: null,
+    method: 'GET',
+    mode: 'cors',
+  },
+);
+
 module.exports = {
   fetchAuth,
   fetchVideos,
-  fetchPage,
+  fetchVideo,
+  fetchSearch,
 };

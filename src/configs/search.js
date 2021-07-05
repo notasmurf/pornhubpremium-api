@@ -144,4 +144,8 @@ module.exports = {
     'premiumOnly',
     'downloadOnly',
   ],
+  types: [
+    'pornstar',
+    'video',
+  ],
 };
