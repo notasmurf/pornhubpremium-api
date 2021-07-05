@@ -55,6 +55,28 @@ describe('Videos Page', () => {
     });
   });
 
+  it('should correctly parameterize the page number', async () => {
+    const expected = { page: '2' };
+    nock('https://www.pornhubpremium.com')
+        .get('/videos')
+        .query(expected)
+        .reply(200, '');
+
+    await ph.videos({ page: 2 });
+  });
+
+  it('should return a page number', async () => {
+    nock('https://www.pornhubpremium.com')
+        .get('/videos')
+        .query({ page: '2' })
+        .reply(200, '');
+
+    const videos = await ph.videos({ page: 2 });
+    const pageNumber = videos.getPage();
+
+    assert.equal(pageNumber, 2);
+  });
+
   it('should return multiple categories as a new URL', async () => {
     nock('https://www.pornhubpremium.com')
       .filteringPath(() => '/videos/incategories/red-head/asian')
