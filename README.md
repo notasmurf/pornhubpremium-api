@@ -37,7 +37,7 @@ console.log(videos);
 ```
 
 Gives you...
-```json
+```js
 [
   {
     title: 'Mofos - Scott Nails Teaches His Step Daughter Angelica Cruz How To Bend Over For Ass Fucking',
@@ -80,7 +80,7 @@ console.log(downloads);
 ```
 
 Results in
-```json
+```js
 [
   {
     definition: 'HD 1080p',
