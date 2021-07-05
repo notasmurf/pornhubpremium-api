@@ -1,4 +1,6 @@
 # Pornhub Premium API (Alpha)
+[![NotASmurf](https://circleci.com/gh/notasmurf/pornhubpremium-api.svg?style=svg)](https://github.com/notasmurf/pornhubpremium-api) [![Coverage Status](https://coveralls.io/repos/github/notasmurf/pornhubpremium-api/badge.svg?branch=main)](https://coveralls.io/github/notasmurf/pornhubpremium-api?branch=main)
+
 Listen here you mankey lovin' _gits_ as this poop nugget of a Application Phappable Interface is the best you are going to get for scraping PornHub Premium (at least in a worthwhile language). So pay attention.
 
 ## Installation

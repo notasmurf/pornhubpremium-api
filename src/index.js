@@ -2,7 +2,7 @@ const endpoints = require('./utils/endpoints');
 const VideosPage = require('./pages/videos');
 const VideoPage = require('./pages/video');
 
-let _cookie;
+let cookie;
 
 /**
  *
@@ -10,16 +10,17 @@ let _cookie;
  * @returns {Promise<void>}
  * @private
  */
-const _authenticate = async (credentials = {}) => {
-    const { username, password, cookie } = credentials;
+const authenticate = async (credentials = {}) => {
+  const { username, password, cookie: authCookie } = credentials;
 
-    if (!cookie) {
-        const response = await endpoints.fetchAuth(username, password);
-        _cookie = response.headers.get('set-cookie');
-    } else {
-        _cookie = cookie;
-    }
-}
+  if (!authCookie) {
+    // @TODO: Make this work.
+    const response = await endpoints.fetchAuth(username, password);
+    cookie = response.headers.get('set-cookie');
+  } else {
+    cookie = authCookie;
+  }
+};
 
 /**
  *
@@ -27,12 +28,13 @@ const _authenticate = async (credentials = {}) => {
  * @returns {Promise<VideosPage>}
  * @private
  */
-const _videos = async (options = {}) => {
-    const response = await endpoints.fetchVideos(options, _cookie);
-    const html = await response.text();
-    const videosPage = new VideosPage(html);
+const videos = async (options = {}) => {
+  const response = await endpoints.fetchVideos(options, cookie);
 
-    return videosPage;
+  const html = await response.text();
+  const videosPage = new VideosPage(html);
+
+  return videosPage;
 };
 
 /**
@@ -41,18 +43,17 @@ const _videos = async (options = {}) => {
  * @returns {Promise<VideoPage>}
  * @private
  */
-const _video = async (url) => {
-    const response = await endpoints.fetchPage(url, _cookie);
+const video = async (url) => {
+  const response = await endpoints.fetchPage(url, cookie);
 
-    const html = await response.text();
-    const videoPage = new VideoPage(html);
+  const html = await response.text();
+  const videoPage = new VideoPage(html);
 
-    return videoPage;
-}
-
+  return videoPage;
+};
 
 module.exports = {
-    authenticate: _authenticate,
-    videos: _videos,
-    video: _video,
+  authenticate,
+  videos,
+  video,
 };
