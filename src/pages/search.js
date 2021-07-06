@@ -1,7 +1,7 @@
-const Page = require('./page');
+const GalleryPage = require('./gallery');
 const urls = require('../configs/urls');
 
-class SearchPage extends Page {
+class SearchPage extends GalleryPage {
   constructor(html, options = {}) {
     super(html);
 

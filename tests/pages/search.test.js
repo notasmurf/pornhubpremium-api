@@ -43,14 +43,26 @@ describe('Search Page', () => {
 
   it('should return a page number', async () => {
     nock('https://www.pornhubpremium.com')
-        .get('/pornstars/search')
-        .query({ search: 'Abby', page: '2' })
-        .reply(200, '');
+      .get('/pornstars/search')
+      .query({ search: 'Abby', page: '2' })
+      .reply(200, '');
 
     const results = await ph.search('Abby', 'pornstars', { page: 2 });
     const pageNumber = results.getPage();
 
     assert.equal(pageNumber, 2);
+  });
+
+  it('should default the page number to 1', async () => {
+    nock('https://www.pornhubpremium.com')
+      .get('/pornstars/search')
+      .query({ search: 'Abby' })
+      .reply(200, '');
+
+    const results = await ph.search('Abby', 'pornstars');
+    const pageNumber = results.getPage();
+
+    assert.equal(pageNumber, 1);
   });
 
   it('should return a list of models for a models search', async () => {
@@ -70,6 +82,25 @@ describe('Search Page', () => {
     const models = results.getModels();
 
     const hasExpected = matching.findMatchingKeys(expected, models);
+    assert.ok(hasExpected);
+  });
+
+  it('should return a list of videos for a videos search', async () => {
+    const expected = {
+      title: 'My Friend‘s Mom By Cory Chase and Codey Steele',
+      url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph60e0b1cde0307',
+      duration: '30:30',
+      username: 'Dr.K In LA',
+    };
+    nock('https://www.pornhubpremium.com')
+      .filteringPath(() => '/pornstars/search')
+      .get('/pornstars/search')
+      .reply(200, fixtures.getFixture('validSearchModelResult.html'));
+
+    const results = await ph.search('Abby', 'videos', { page: 2 });
+    const videos = results.getVideos();
+
+    const hasExpected = matching.findMatchingKeys(expected, videos);
     assert.ok(hasExpected);
   });
 });

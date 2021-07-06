@@ -1,7 +1,7 @@
-const Page = require('./page');
+const GalleryPage = require('./gallery');
 const urls = require('../configs/urls');
 
-class VideosPage extends Page {
+class VideosPage extends GalleryPage {
   constructor(html, options = {}) {
     super(html);
 
@@ -10,29 +10,6 @@ class VideosPage extends Page {
 
   getPage() {
     return this.options.page || 1;
-  }
-
-  getVideos() {
-    const videoListItems = Array.from(this.dom('.pcVideoListItem'));
-
-    const videos = videoListItems.map((videoListItem) => {
-      const videoListElem = this.dom(videoListItem);
-
-      const username = videoListElem.find('.usernameWrap').first().text().trim();
-      const duration = videoListElem.find('.duration').first().text().trim();
-      const titleElem = videoListElem.find('[title]');
-      const title = titleElem.attr('title').trim();
-      const url = titleElem.attr('href');
-
-      return {
-        title,
-        url: `${urls.baseUrl}${url}`,
-        duration,
-        username,
-      };
-    });
-
-    return videos;
   }
 
   getCategories() {

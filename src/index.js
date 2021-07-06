@@ -2,6 +2,7 @@ const endpoints = require('./utils/endpoints');
 const VideosPage = require('./pages/videos');
 const VideoPage = require('./pages/video');
 const SearchPage = require('./pages/search');
+const ModelPage = require('./pages/model');
 
 let cookie;
 
@@ -69,9 +70,40 @@ const search = async (text = '', type = 'videos', options = {}) => {
   return searchPage;
 };
 
+/**
+ *
+ * @param url
+ * @returns {Promise<ModelPage>}
+ */
+const model = async (url) => {
+  const response = await endpoints.fetchModel(url, cookie);
+
+  const html = await response.text();
+  const modelPage = new ModelPage(html);
+
+  return modelPage;
+};
+
+/**
+ *
+ * @param url
+ * @param options
+ * @returns {Promise<VideosPage>}
+ */
+const modelVideos = async (url, options = {}) => {
+  const response = await endpoints.fetchModelVideos(url, options, cookie);
+
+  const html = await response.text();
+  const videosPage = new VideosPage(html, options);
+
+  return videosPage;
+};
+
 module.exports = {
   authenticate,
   videos,
   video,
   search,
+  model,
+  modelVideos,
 };
