@@ -10,7 +10,7 @@
     "nyc": "nyc npm run mocha",
     "coverage": "npm run nyc | coveralls",
     "test": "npm run eslint && npm run coverage",
-    "start":  "node src/index"
+    "start": "node src/index"
   },
   "author": "",
   "license": "MIT",
