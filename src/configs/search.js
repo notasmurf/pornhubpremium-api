@@ -116,34 +116,27 @@ module.exports = {
     yearly: 'y',
     allTime: 'a',
   },
-  production: {
-    homemade: 'homemade',
-    professional: 'professional',
-  },
+  rangedRankings: ['mostViewed', 'topRated'],
   quality: {
-    fourK: '4',
-    fourteenFourtyK: '3',
-    tenEighty: '2',
+    '4k': '4',
+    '1440p': '3',
+    '1080p': '2',
+    all: 1,
   },
   video: {
-    all: '',
     premiumOnly: 'premium',
     downloadOnly: 'download',
   },
-  params: {
+  keys: {
     rankings: 'o',
     quality: 'hd',
     production: 'p',
     ranges: 't',
   },
-  options: [
-    'rankings',
-    'quality',
-    'production',
-    'ranges',
-    'premiumOnly',
-    'downloadOnly',
-  ],
+  duration: {
+    max: 'max_duration',
+    min: 'min_duration',
+  },
   types: [
     'pornstar',
     'video',

@@ -38,17 +38,26 @@ await ph.authenticate({
 ```
 
 ### Videos
-So you want to get all the links on the main videos page so you can add them to your spank bank. I got your back. But just your back.
+I bet you want to get all the links on the main videos page so you can add them to your spank bank. I got your back, bea. But just your back.
 ```js
 const pageVideos = await ph.videos({
-    video: {
-        premiumOnly: 1,
-        downloadOnly: 1,
-    },
-    categories: ['Red Head', 'Verified Amateurs'],
+  video: {
+    premiumOnly: 1,
+    downloadOnly: 1,
+  },
+  duration: {
+    min: 0,
+    max: 30,
+  },
+  raking: 'mostViewed',
+  range: 'weekly',
+  quality: '4k',
+  categories: ['Red Head', 'Verified Amateurs'],
+  page: 1,
 });
 
-console.log(videos.getVideos());
+console.log(videos.hasResults()); // Returns true if query returned results.
+console.log(videos.getVideos()); // Returns ALL videos on page.
 /** Print
 [
  {
@@ -72,25 +81,30 @@ conole.log(videos.getCategories());
  */
 ```
 
+<details>
+  <summary><b>Here are the supported arguments for the `.videos` function.</b> (click to expand)</summary>
+
+| argument | type | description | default | options | 
+| :--- | :--- | :--- | :--- | :--- |
+| `video` | object | enables premium or download only options | both false by default | `premiumOnly` and `downloadOnly`, passed as 0 or 1 |
+| `duration` | object | sets the specified min and max duration option | widest range by default | `min_duration` and `max_duration` as ints in units of 10 |
+| `quality` | string | sets the min resolution | widest range by default | `4k`, `1440p`, `1080p`, `all`
+| `category` | array | sets the categories for which to search | all categories | all categories on pornhub in camel case |
+| `production` | string | sets the production type of the search results | both types | `homemade`, `professional` |
+| `ranking` | string | sets the ranking of the search results | defaults to featured videos | `mostViewed`,  `topRated`, `hottest`, `longest`, `newest` |
+| `range` | string | sets the upload time range for the video result (for `mostViewed` and `topRated` only) | defaults to `weekly` | `daily`, `weekly`, `monthly`, `yearly`, `allTime` | 
+| `page` | number | sets the pagination number | defaults to first page | any whole numbers >= 1 |
+</details>
+
 
 ### Video
-Now that you got your dirty list of naughtiables, let's get some download links going. Ol' `@notasmurf` has GOT you bro.
+Now that you got your dirty list of naughtiables, let's get some download links going. Ol' `@notasmurf` has GOT you covered.
 ```js
-const videos = await ph.videos({
-    video: {
-        premiumOnly: 1,
-        downloadOnly: 1,
-    },
-    categories: ['Red Head', 'Verified Amateurs'],
-});
-
-const vids = videos.getVideos({ page: 1 }); // Options not required. Defaults to 1.
-
-const video = await ph.video(vids[0].url);
+const video = await ph.video('https://www.pornhubpremium.com/view_video.php?viewkey=ph60b9e26695e28');
 
 // Get all downloadable video links (if present).
 console.log(video.getDownloads());
-/** Prints
+/** Example
 [
  {
     definition: 'HD 1080p',
@@ -101,7 +115,7 @@ console.log(video.getDownloads());
 
 // Print the models associated with the video.
 console.log(video.getModels());
-/** Prints
+/** Example
 [
  {
     name: 'Bethany Benz',
@@ -113,7 +127,7 @@ console.log(video.getModels());
 
 
 ### Search
-Okay, so now for the good stuff. You can search one of two ways currently. See below for the details.
+Okay, so now for the good stuff. You can do some plaintext searches as well, for both models and videos. See below for the details.
 
 #### For Models:
 ```js
@@ -121,7 +135,7 @@ const models = await ph.search('Abby', 'pornstars', { page: 1 }); // Options not
 
 console.log(models.getModels());
 
-/** Prints
+/** Example
 [
  { rank: '8041', name: 'Abby Lane', videos: '12 Videos' },
  { rank: '9762', name: 'Abby Lexus', videos: '4 Videos' },
@@ -138,7 +152,7 @@ const models = await ph.search('Redhead', 'video', { page: 1 }); // Options not 
 
 console.log(models.getModels());
 
-/** Prints
+/** Example
 [
  {
     title: 'HOT REDHEAD STEPDAUGHTER LACY LENNON SQUIRTS OUT MY ACCIDENTAL CREAMPIE',
@@ -152,14 +166,14 @@ console.log(models.getModels());
 
 
 ### Model
-So now that you've just used my tool for the sole purpose of querying for asian pornstars with big tits, let's use this tool to scrape your oriental honey's personal page.
+So now that you've just used my tool for the sole purpose of scraping PornHub for asian pornstars with big tits, let's use this tool to scrape your oriental honey's personal page.
 
 ```js
 const model = await ph.model('https://www.pornhubpremium.com/pornstar/britney-amber');
 const details = model.getDetailedInfo();
 
 console.log(details);
-/** Prints:
+/** Example:
  {
   relationshipStatus: 'Single',
   interestedIn: 'Guys and Girls',
@@ -186,20 +200,20 @@ console.log(details);
  */
 
 const videos = model.getVideos(); // ONLY shows videos on the immediate page.
-/** Prints
+/** Example
 [
  {
-    title: 'Kimberly Climbs the Big Black Dick Mountain for the First Time',
-    url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph60df0ed563c21',
-    duration: '22:52',
-    username: 'Interracial Pass'
+    title: 'Big Booty Teen Slut Abby Gets Fucked By Her Perverted Stepdad',
+    url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph5dc77449561a1',
+    duration: '24:35',
+    username: 'Exposed Whores'
   }
 ]
  */
 ```
 
 ### Model Videos
-Okay, so each model page has like...10 filthy video links on it. You want even more. You got it baby bird.
+Not enough videos for you on your model's personal page? Christ, man. You're a fucking addict. But I got you covered, baby bird. Here's all you need.
 
 ```js
 const model = await ph.model('https://www.pornhubpremium.com/pornstar/britney-amber');
@@ -207,15 +221,15 @@ const model = await ph.model('https://www.pornhubpremium.com/pornstar/britney-am
 // Use the following to get a complete list of 
 const moreVideosUrl = model.getMoreVideosUrl();
 console.log(moreVideosUrl);
-// Prints: https://www.pornhubpremium.com/pornstar/britney-amber/videos
+// Example: https://www.pornhubpremium.com/pornstar/britney-amber/videos
 
 const morePremiumVideosUrl = model.getMorePremiumVideosUrl();
 console.log(morePremiumVideosUrl);
-// Prints: https://www.pornhubpremium.com/pornstar/britney-amber/videos?premium=1
+// Example: https://www.pornhubpremium.com/pornstar/britney-amber/videos?premium=1
 
 const modelVideos = await ph.modelVieos(morePremiumVideosUrl, { page: 1 }); // Options not required. Defaults to 1.
 console.log(modelVideos);
-/** Prints:
+/** Example:
 [
  {
     title: 'MileHigh - Two Horny Lesbians Britney Amber And Ivy Lebelle Love Anal Play',

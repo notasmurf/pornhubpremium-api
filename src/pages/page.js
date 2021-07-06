@@ -9,10 +9,13 @@ class Page {
         normalizeWhitespace: true,
       },
     });
+    const domText = this.dom.text();
 
     // Check auth.
-    if (this.dom.text().includes(content.loginPageText)) {
-      throw new Error('Auth failed.');
+    if (domText.includes(content.loginPageText)) {
+      throw new Error('Auth failed');
+    } else if (domText.includes(content.errorPage)) {
+      throw new Error('Page not found');
     }
   }
 }

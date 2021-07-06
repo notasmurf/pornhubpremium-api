@@ -1,5 +1,6 @@
-const Page = require('./page');
+const Page = require('./page');supported
 const urls = require('../configs/urls');
+const content = require('../configs/content');
 
 class GalleryPage extends Page {
   getVideos() {
@@ -23,6 +24,11 @@ class GalleryPage extends Page {
     });
 
     return videos;
+  }
+
+  hasResults() {
+    const domText = this.dom.text();
+    return !!content.noResults.find((noResultText) => domText.includes(noResultText));
   }
 }
 
