@@ -1,4 +1,4 @@
-const Page = require('./page');supported
+const Page = require('./page');
 const urls = require('../configs/urls');
 const content = require('../configs/content');
 
