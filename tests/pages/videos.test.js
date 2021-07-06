@@ -55,14 +55,48 @@ describe('Videos Page', () => {
     });
   });
 
+  it('should return a page number', async () => {
+    nock('https://www.pornhubpremium.com')
+      .get('/videos')
+      .query({ page: '2' })
+      .reply(200, '');
+
+    const videos = await ph.videos({ page: 2 });
+    const pageNumber = videos.getPage();
+
+    assert.equal(pageNumber, 2);
+  });
+
+  it('should default the page number to 1', async () => {
+    nock('https://www.pornhubpremium.com')
+      .get('/videos')
+      .reply(200, '');
+
+    const videos = await ph.videos();
+    const pageNumber = videos.getPage();
+
+    assert.equal(pageNumber, 1);
+  });
+
   it('should return multiple categories as a new URL', async () => {
     nock('https://www.pornhubpremium.com')
-      .filteringPath(() => '/videos/incategories/red-head/asian')
       .get('/videos/incategories/red-head/asian')
       .reply(200, fixtures.getFixture('validVideosResult.html'));
 
     await ph.videos({
       categories: ['Red Head', 'Asian'],
+    });
+  });
+
+  it('should return a single category as a query param', async () => {
+    const expected = { c: '42' };
+    nock('https://www.pornhubpremium.com')
+      .get('/video')
+      .query(expected)
+      .reply(200, fixtures.getFixture('validVideosResult.html'));
+
+    await ph.videos({
+      categories: ['Red Head'],
     });
   });
 

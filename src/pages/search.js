@@ -1,6 +1,7 @@
-const Page = require('./page');
+const GalleryPage = require('./gallery');
+const urls = require('../configs/urls');
 
-class SearchPage extends Page {
+class SearchPage extends GalleryPage {
   constructor(html, options = {}) {
     super(html);
 
@@ -20,6 +21,7 @@ class SearchPage extends Page {
       const thumbnailAnchor = thumbnailWrapper.find('a');
 
       const name = thumbnailAnchor.text().trim();
+      const url = thumbnailAnchor.attr('href');
       const rank = searchResultElem.find('.rank_number').text().trim();
       const videos = thumbnailWrapper.find('.videosNumber').text().trim();
       const views = thumbnailWrapper.find('.pstarViews').text().trim();
@@ -29,6 +31,7 @@ class SearchPage extends Page {
         name,
         videos,
         views,
+        url: `${urls.baseUrl}${url}`,
       };
     });
 

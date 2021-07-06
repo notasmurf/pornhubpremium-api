@@ -1,7 +1,7 @@
 # Pornhub Premium API (Alpha)
 [![NotASmurf](https://circleci.com/gh/notasmurf/pornhubpremium-api.svg?style=svg)](https://github.com/notasmurf/pornhubpremium-api) [![Coverage Status](https://coveralls.io/repos/github/notasmurf/pornhubpremium-api/badge.svg?branch=main)](https://coveralls.io/github/notasmurf/pornhubpremium-api?branch=main)
 
-Listen here you mankey lovin' _gits_ as this poop nugget of a Application Phappable Interface is the best you are going to get for scraping PornHub Premium (at least in a worthwhile language). So pay attention.
+Listen here you mankey lovin' _gits_ as this poop nugget of an Application Phappable Interface is the best you are going to get for scraping PornHub Premium (at least in a worthwhile language). So pay attention.
 
 **Table of Contents**
 
@@ -12,6 +12,8 @@ Listen here you mankey lovin' _gits_ as this poop nugget of a Application Phappa
     - [Videos](#videos) - Searching the videos page.
     - [Video](#video) - Visiting a particular video.
     - [Search](#search) - Performing video/model search.
+    - [Model](#model) - For searching specific models.
+    - [Model Videos](#model-videos) - View collection of model's videos.
 - [Coming Soon](#coming-soon)
 - [FAQs](#faqs)
     
@@ -24,7 +26,7 @@ npm i @notasmurf/pornhubpremium-api
 ## Usage
 
 ### Authentication
-You'll first need to log in. For now, just physically log in and grab the cookie returned in the `/autenticate` call. It's along lasting token anyway. I am working to figure out regular auth.
+You'll first need to log in. For now, just physically log in and grab the cookie returned in the one of the subsequent page load calls. It's a long lasting token anyway. I am working to figure out regular auth.
 
 Example
 ```js
@@ -113,7 +115,7 @@ console.log(video.getModels());
 ### Search
 Okay, so now for the good stuff. You can search one of two ways currently. See below for the details.
 
-**For Models:**
+#### For Models:
 ```js
 const models = await ph.search('Abby', 'pornstars', { page: 1 }); // Options not required. Defaults to 1.
 
@@ -128,31 +130,122 @@ console.log(models.getModels());
  { rank: '1697', name: 'Abby Cross', videos: '130 Videos' }
 ]
  */
+```
+
+#### For Videos:
+```js
+const models = await ph.search('Redhead', 'video', { page: 1 }); // Options not required. Defaults to 1.
+
+console.log(models.getModels());
+
+/** Prints
+[
+ {
+    title: 'HOT REDHEAD STEPDAUGHTER LACY LENNON SQUIRTS OUT MY ACCIDENTAL CREAMPIE',
+    url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph5c0c89e719f50',
+    duration: '44:26',
+    username: 'Spank Monster'
+  }
+]
+ */
+```
 
 
+### Model
+So now that you've just used my tool for the sole purpose of querying for asian pornstars with big tits, let's use this tool to scrape your oriental honey's personal page.
 
+```js
+const model = await ph.model('https://www.pornhubpremium.com/pornstar/britney-amber');
+const details = model.getDetailedInfo();
+
+console.log(details);
+/** Prints:
+ {
+  relationshipStatus: 'Single',
+  interestedIn: 'Guys and Girls',
+  cityAndCountry: 'Southern California, US',
+  pornstarProfileViews: '35,568,683',
+  careerStatus: 'Active',
+  careerStartAndEnd: '2008 to Present',
+  gender: 'Female',
+  birthPlace: 'Banning, California, United States of America',
+  starSign: 'Scorpio',
+  measurements: '36D-24-34',
+  height: '5 ft 5 in (165 cm)',
+  weight: '115 lbs (52 kg)',
+  ethnicity: 'White',
+  hairColor: 'Blonde',
+  fakeBoobs: 'Yes',
+  tattoos: 'Yes',
+  piercings: 'Yes',
+  interestsAndHobbies: 'Archery and Bowhunting',
+  hometown: 'Southern California',
+  profileViews: '21,998,089',
+  videosWatched: '51',
+}
+ */
+
+const videos = model.getVideos(); // ONLY shows videos on the immediate page.
+/** Prints
+[
+ {
+    title: 'Kimberly Climbs the Big Black Dick Mountain for the First Time',
+    url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph60df0ed563c21',
+    duration: '22:52',
+    username: 'Interracial Pass'
+  }
+]
+ */
+```
+
+### Model Videos
+Okay, so each model page has like...10 filthy video links on it. You want even more. You got it baby bird.
+
+```js
+const model = await ph.model('https://www.pornhubpremium.com/pornstar/britney-amber');
+
+// Use the following to get a complete list of 
+const moreVideosUrl = model.getMoreVideosUrl();
+console.log(moreVideosUrl);
+// Prints: https://www.pornhubpremium.com/pornstar/britney-amber/videos
+
+const morePremiumVideosUrl = model.getMorePremiumVideosUrl();
+console.log(morePremiumVideosUrl);
+// Prints: https://www.pornhubpremium.com/pornstar/britney-amber/videos?premium=1
+
+const modelVideos = await ph.modelVieos(morePremiumVideosUrl, { page: 1 }); // Options not required. Defaults to 1.
+console.log(modelVideos);
+/** Prints:
+[
+ {
+    title: 'MileHigh - Two Horny Lesbians Britney Amber And Ivy Lebelle Love Anal Play',
+    url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph5eaac125892e4',
+    duration: '29:27',
+    username: 'Sweetheart Video'
+  }
+]
+ */
 ```
 
 ## COMING SOON
 * More search features
-* Model page
 * Favorites page
+* A better readme
+* If you want more, make a request on the Issues page.
 
 ## FAQs:
-**1) Is this thing stable currently?**
+**1) When will this package be ready?**
 
-Fuck no. I wrote this whole thing in less than 5 hours.
+I'll move it out of alpha once I have finished enough of the core features. I don't expect to make any major breaking changes though, although there will of course be bugs, so go ahead and give it a whirl.
 
-**2) Will this thing eventually be production ready?**
+**2) Will this thing be production ready after alpha?**
 
 Why...why the hell would you need that...
 
 **3) How do I contribute?**
 
-Make a PR and hope I get around to it. 
-
-Please write some tests.
+Make a PR. Why is this always a FAQ question? Git has one purpose. 
 
 **4) This is PornHub. Can we hire you?**
 
-Tell you what. If you have the balls to make a meaningful PR to this repo, I will fucking apply.
+Tell you what. If you have the balls to make a meaningful PR to this repo, I will abso-fucking-lutely apply.

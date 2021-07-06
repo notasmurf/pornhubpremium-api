@@ -5,7 +5,7 @@ module.exports = {
   baseUrl,
   videosUrl,
   authUrl: `${baseUrl}/front/authenticate`,
-  videoSearchUrl: `${videosUrl}/search`,
+  videoSearchUrl: `${baseUrl}/video/search`,
   modelSearchUrl: `${baseUrl}/pornstars/search`,
   incategories: `${videosUrl}/incategories`,
 };
