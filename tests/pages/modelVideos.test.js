@@ -23,7 +23,7 @@ describe('Videos Page', () => {
   it('should correctly parameterize the page number', async () => {
     const expected = { page: '2' };
     nock('https://www.pornhubpremium.com')
-      .get('/videos')
+      .get('/video')
       .query(expected)
       .reply(200, '');
 
@@ -42,7 +42,7 @@ describe('Videos Page', () => {
     assert.equal(pageNumber, 2);
   });
 
-  it('should return an array of videos from the results', async () => {
+  it('should return all videos on the pages', async () => {
     const expected = {
       title: 'Stepmom Britney Amber Discipline Her Naughty Stepdaughter Katya Rodriguez',
       url: 'https://www.pornhubpremium.com/view_video.php?viewkey=ph60c34a288632f',

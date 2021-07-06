@@ -1,11 +1,11 @@
 const baseUrl = 'https://www.pornhubpremium.com';
-const videosUrl = `${baseUrl}/videos`;
+const videoUrl = `${baseUrl}/video`;
 
 module.exports = {
   baseUrl,
-  videosUrl,
+  videoUrl,
   authUrl: `${baseUrl}/front/authenticate`,
-  videoSearchUrl: `${baseUrl}/video/search`,
+  videoSearchUrl: `${videoUrl}/search`,
   modelSearchUrl: `${baseUrl}/pornstars/search`,
-  incategories: `${videosUrl}/incategories`,
+  incategories: `${videoUrl}/incategories`,
 };

@@ -24,7 +24,7 @@ const getBaseVideoUrl = (options = {}) => {
     return `${urls.incategories}/${incategories}`;
   }
 
-  return urls.videosUrl;
+  return urls.videoUrl;
 };
 
 /**
@@ -56,17 +56,78 @@ const getPageParams = (page) => (page ? { page } : {});
 
 /**
  *
+ * @param quality
+ * @returns {*}
+ */
+const getQualityParams = (quality) => (
+  quality
+    ? { [search.keys.quality]: search.quality[quality] }
+    : {}
+);
+
+/**
+ *
+ * @param production
+ * @returns {*}
+ */
+const getProductionParams = (production) => (
+  production
+    ? { [search.keys.production]: production }
+    : {}
+);
+
+/**
+ *
+ * @param ranking
+ * @param range
+ * @returns {{}}
+ */
+const getRankRangeParams = (ranking, range) => {
+  const params = {};
+  if (search.rankings[ranking]) {
+    params[search.keys.rankings] = search.rankings[ranking];
+    if (search.rangedRankings.includes(ranking) && search.ranges[range]) {
+      params[search.keys.ranges] = search.ranges[range];
+    }
+  }
+
+  return params;
+};
+
+/**
+ *
+ * @param duration
+ * @returns {{}}
+ */
+const getDurationParams = (duration = {}) => Object.keys(search.duration)
+  .reduce((acc, key) => {
+    if (duration[key]) acc[search.duration[key]] = duration[key];
+    return acc;
+  }, {});
+
+/**
+ *
  * @param options
  * @returns {`${string}?${string}`}
  * @private
  */
 const buildVideosUrl = (options = {}) => {
-  const videoBase = getBaseVideoUrl(options);
+  const defaultOptions = {
+    ranking: '',
+    range: '',
+    ...options,
+  };
+  const videoBase = getBaseVideoUrl(defaultOptions);
   let queryObject = QueryString.parseUrl(videoBase);
+
   queryObject = {
     ...queryObject.query,
-    ...getVideosParams(options.video),
-    ...getPageParams(options.page),
+    ...getVideosParams(defaultOptions.video),
+    ...getPageParams(defaultOptions.page),
+    ...getQualityParams(defaultOptions.quality),
+    ...getDurationParams(defaultOptions.duration),
+    ...getProductionParams(defaultOptions.production),
+    ...getRankRangeParams(defaultOptions.ranking, defaultOptions.range),
   };
   const queryString = QueryString.stringify(queryObject);
   const urlString = videoBase.split('?')[0]; // Remove latent queries.
